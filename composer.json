@@ -33,7 +33,6 @@
         "zendframework/zend-config": "Zend\\Config component",
         "zendframework/zend-form": "Zend\\Form component"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
