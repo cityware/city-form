@@ -1,6 +1,6 @@
 {
     "name": "cityware/city-form",
-    "description": " ",
+    "description": "Cityware Form",
     "license": "GPL-3.0",
     "keywords": [
         "cityware",
@@ -30,6 +30,7 @@
         "zendframework/zend-config": "Zend\\Config component",
         "zendframework/zend-form": "Zend\\Form component"
     },
+    "minimum-stability":"dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
