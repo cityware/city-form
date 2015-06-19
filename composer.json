@@ -29,7 +29,9 @@
         "phpunit/PHPUnit": "~4.0"
     },
     "suggest": {
-        "ext-intl": "Required for most features of Zend\\I18n; included in default builds of PHP"
+        "ext-intl": "Required for most features of Zend\\I18n; included in default builds of PHP",
+        "zendframework/zend-config": "Zend\\Config component",
+        "zendframework/zend-form": "Zend\\Form component"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
