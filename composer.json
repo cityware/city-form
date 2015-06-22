@@ -6,19 +6,34 @@
         "cityware",
         "form"
     ],
+    "authors": [
+        {
+            "name": "Fabricio S V Xavier",
+            "email": "fabricio@cityware.com.br",
+            "homepage": "http://www.cityware.com.br",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/cityware/city-form.git"
+        }
+    ],
     "homepage": "https://github.com/cityware/city-form",
     "autoload": {
         "psr-4": {
             "Cityware\\Form\\": "src/"
-        }
+        },
+        "psr-0": {
+            "Cityware\\Form\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
     },
     "require": {
         "php": ">=5.3.23"
-    },
-    "autoload": {
-      "classmap": [
-        "src/"
-      ]
     },
     "require-dev": {
         "zendframework/zend-servicemanager": "~2.5",
