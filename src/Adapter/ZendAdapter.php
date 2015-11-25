@@ -358,23 +358,28 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
 
                 if (strtolower($params['type']) == 'password') {
                     if (isset($params['encrypted']) and strtolower($params['encrypted']) == 'true') {
-                        if (isset($populateValues[$fieldName]) and !empty($populateValues[$fieldName])) {
+                        if (isset($populateValues[$params['name']]) and !empty($populateValues[$params['name']])) {
                             $crypt = new \Cityware\Security\Crypt();
-                            $populateValues[$fieldName] = $crypt->decrypt($populateValues[$fieldName]);
+                            $populateValues[$fieldName] = $crypt->decrypt($populateValues[$params['name']]);
                         }
                     }
                 }
+                
+                
 
                 if (isset($params['concatcolumn']) and ! empty($params['concatcolumn'])) {
+                    //echo "<pre>";
+                //print_r($populateValues);
+                //exit;
                     if (isset($params['concattype']) and $params['concattype'] == 'inverse') {
-                        $populateValues[$fieldName] = $populateValues[$params['concatcolumn']] . $params['concatseparator'] . $populateValues[$fieldName];
+                        $populateValues[$fieldName] = $populateValues[$params['concatcolumn']] . $params['concatseparator'] . $populateValues[$params['name']];
                     } else {
-                        $populateValues[$fieldName] = $populateValues[$fieldName] . $params['concatseparator'] . $populateValues[$params['concatcolumn']];
+                        $populateValues[$fieldName] = $populateValues[$params['name']] . $params['concatseparator'] . $populateValues[$params['concatcolumn']];
                     }
                 }
 
                 if (strtolower($params['type']) == 'money') {
-                    $populateValues[$fieldName] = \Cityware\Format\Money::formataValor($populateValues[$fieldName], '.', 2, ',', '.');
+                    $populateValues[$params['name']] = \Cityware\Format\Money::formataValor($populateValues[$params['name']], '.', 2, ',', '.');
                 }
             }
 
@@ -439,6 +444,13 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
                     $this->selectOptions += $this->selectExternalOptions[$fieldName];
                 }
 
+                $element->setValueOptions($this->selectOptions);
+            } elseif (isset($fieldParams['type']) and ( $fieldParams['type'] == 'selectgroup')) {
+                /* Verifica se é um campo multi valores e adiciona os valores padrões */
+
+                if (isset($this->selectExternalOptions[$fieldName]) and ! empty($this->selectExternalOptions[$fieldName])) {
+                    $this->selectOptions += $this->selectExternalOptions[$fieldName];
+                }
                 $element->setValueOptions($this->selectOptions);
             }
         }
@@ -575,7 +587,6 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
     private function prepareFields($fieldName, array $fieldParams, array $options = array()) {
         $element = null;
         $extraLabel = " ";
-        $this->selectOptions = Array();
         $this->aOptions = Array();
         $this->aAttributes = Array();
 
@@ -690,7 +701,21 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
             case 'select':
                 $element = new ZendFormElement\Select($fieldName, Array('disable_inarray_validator' => true));
                 $element->setLabel($this->getTranslator($fieldName) . $extraLabel);
+                $this->selectOptions = Array();
+                if (isset($fieldParams['placeholder']) and strtolower($fieldParams['placeholder']) == 'true') {
+                    $this->selectOptions[''] = $this->getTranslator($fieldName . '_placeholder');
+                } else {
+                    $this->selectOptions[''] = "---------";
+                }
 
+                $this->aAttributes['class'] = 'form-input-select';
+                break;
+                
+            /* Caso selectgroup */
+            case 'selectgroup':
+                $element = new ZendFormElement\Select($fieldName, Array('disable_inarray_validator' => true));
+                $element->setLabel($this->getTranslator($fieldName) . $extraLabel);
+                $this->selectOptions = Array();
                 if (isset($fieldParams['placeholder']) and strtolower($fieldParams['placeholder']) == 'true') {
                     $this->selectOptions[''] = $this->getTranslator($fieldName . '_placeholder');
                 } else {
