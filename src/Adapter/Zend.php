@@ -2,7 +2,6 @@
 
 namespace Cityware\Form\Adapter;
 
-use Cityware\Form\Models\FormsDb;
 use Zend\Config\Factory AS ZendConfigFile;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\I18n\Translator as MvcTranslator;
@@ -14,7 +13,7 @@ use Zend\Validator\ValidatorChain as ZendValidatorChain;
 use Zend\Validator\AbstractValidator;
 use Zend\Session\Container as SessionContainer;
 
-class ZendAdapter extends ZendForm implements AdapterInterface {
+class Zend extends ZendForm implements AdapterInterface {
 
     private $nameIniForm, $formDefaultConfig, $formFiledsConfig, $formButtonsConfig;
     private $urlAction, $translator, $moduleName, $controllerName, $actionName, $editFlag = false;
@@ -333,7 +332,8 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
         if (trim(strtolower($this->actionName)) == 'edit' or $this->editFlag == true) {
 
             /* Instancia o Model de formulários */
-            $relationship = new FormsDb();
+            $moduleName = '\\' . ucfirst($this->moduleName) . '\\Models\\Forms';
+            $relationship = new $moduleName();
             $relationship->setConfigForm($this->formDefaultConfig);
 
             /* Verifica se há dados externos se não popula com dados do banco */
@@ -358,7 +358,7 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
 
                 if (strtolower($params['type']) == 'password') {
                     if (isset($params['encrypted']) and strtolower($params['encrypted']) == 'true') {
-                        if (isset($populateValues[$params['name']]) and !empty($populateValues[$params['name']])) {
+                        if (isset($populateValues[$params['name']]) and ! empty($populateValues[$params['name']])) {
                             $crypt = new \Cityware\Security\Crypt();
                             $populateValues[$fieldName] = $crypt->decrypt($populateValues[$params['name']]);
                         }
@@ -727,7 +727,7 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
 
             /* Caso multiselect */
             case 'multiselect':
-                $element = new ZendFormElement\Select($fieldName);
+                $element = new ZendFormElement\Select($fieldName, Array('disable_inarray_validator' => true));
                 $element->setLabel($this->getTranslator($fieldName) . $extraLabel);
                 $this->aAttributes['class'] = 'form-input-select ms';
                 $this->aAttributes['multiple'] = 'multiple';
@@ -735,7 +735,7 @@ class ZendAdapter extends ZendForm implements AdapterInterface {
 
             /* Caso fileimage */
             case 'fileimage':
-                $element = new \Cityware\Form\Element\Fileimage($fieldName);
+                $element = new ZendFormElement\File($fieldName);
                 $element->setLabel($this->getTranslator($fieldName) . $extraLabel);
                 //$this->aAttributes['multiple'] = true;
                 $this->aAttributes['class'] = 'hiddenImageFile';
