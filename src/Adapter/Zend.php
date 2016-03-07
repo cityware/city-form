@@ -1056,7 +1056,12 @@ class Zend extends ZendForm implements AdapterInterface {
                     case 'recordexists':
 
                         $options['adapter'] = \Cityware\Db\Factory::factory('zend')->getAdapter();
+                        
+                        if (isset($params['recordColumn']) and ! empty($params['recordColumn'])) {
+                            $options['field'] = $params['recordColumn'];
+                        } else {
                         $options['field'] = $params['name'];
+                        }
 
                         if (isset($params['recordTable']) and ! empty($params['recordTable'])) {
                             $options['table'] = $params['recordTable'];
@@ -1093,7 +1098,12 @@ class Zend extends ZendForm implements AdapterInterface {
 
                     case 'norecordexists':
                         $options['adapter'] = \Cityware\Db\Factory::factory('zend')->getAdapter();
+                        
+                        if (isset($params['recordColumn']) and ! empty($params['recordColumn'])) {
+                            $options['field'] = $params['recordColumn'];
+                        } else {
                         $options['field'] = $params['name'];
+                        }
 
                         if (isset($params['recordTable']) and ! empty($params['recordTable'])) {
                             $options['table'] = $params['recordTable'];
