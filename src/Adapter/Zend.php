@@ -465,8 +465,7 @@ class Zend extends ZendForm implements AdapterInterface {
     private function relationshipFields($params) {
 
         /* Pega dados do banco */
-        $moduleName = '\\' . ucfirst($this->moduleName) . '\\Models\\Forms';
-        $relationship = new $moduleName();
+        $relationship = new \Cityware\Form\Models\FormsDb();
         $data = $relationship->populateSelect($params);
 
         /* Formata os dados do banco para o padrão do zend_form */
