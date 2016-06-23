@@ -21,13 +21,13 @@ abstract class Factory
      * @var array Known captcha types
      */
     protected static $classMap = array(
-        'zend' => 'Cityware\Form\Adapter\ZendAdapter',
+        'zend' => 'Cityware\Form\Adapter\Zend',
     );
 
     /**
      * Create a captcha adapter instance
      *
-     * @param  array|Traversable                  $options
+     * @param  string                  $adapter
      * @return AdapterInterface
      * @throws Exception\InvalidArgumentException for a non-array, non-Traversable $options
      * @throws Exception\DomainException          if class is missing or invalid
