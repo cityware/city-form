@@ -332,8 +332,7 @@ class Zend extends ZendForm implements AdapterInterface {
         if (trim(strtolower($this->actionName)) == 'edit' or $this->editFlag == true) {
 
             /* Instancia o Model de formulários */
-            $moduleName = '\\' . ucfirst($this->moduleName) . '\\Models\\Forms';
-            $relationship = new $moduleName();
+            $relationship = new \Cityware\Form\Models\FormsDb();
             $relationship->setConfigForm($this->formDefaultConfig);
 
             /* Verifica se há dados externos se não popula com dados do banco */
