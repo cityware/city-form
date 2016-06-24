@@ -496,9 +496,9 @@ class Zend extends ZendForm implements AdapterInterface {
      * @return type
      */
     private function dependRelationshipFields($params) {
+        
         $multiOptions = Array();
-        $moduleName = '\\' . ucfirst($this->moduleName) . '\\Models\\Forms';
-        $relationship = new $moduleName();
+        $relationship = new \Cityware\Form\Models\FormsDb();
 
         /* Define o schema da tabela se definido */
         if (trim(strtolower($this->actionName)) == 'edit') {
