@@ -341,7 +341,6 @@ class Zend extends ZendForm implements AdapterInterface {
             } else {
                 $populateValues = $relationship->populateForm($this->getUrlParam('id'));
             }
-
             foreach ($this->formFiledsConfig as $fieldName => $params) {
                 if (isset($params['relationship']) and strtolower($params['relationship']) == 'true') {
                     if (strtolower($params['type']) == 'multiselect' and empty($populateValues)) {
@@ -356,10 +355,13 @@ class Zend extends ZendForm implements AdapterInterface {
                 }
 
                 if (strtolower($params['type']) == 'password') {
+                    if (isset($populateValues[$params['name']]) and ! empty($populateValues[$params['name']])) {
+                        
                     if (isset($params['encrypted']) and strtolower($params['encrypted']) == 'true') {
-                        if (isset($populateValues[$params['name']]) and ! empty($populateValues[$params['name']])) {
                             $crypt = new \Cityware\Security\Crypt();
                             $populateValues[$fieldName] = $crypt->decrypt($populateValues[$params['name']]);
+                        } else {
+                            $populateValues[$fieldName] = $populateValues[$params['name']];
                         }
                     }
                 }
